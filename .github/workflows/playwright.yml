@@ -7,6 +7,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   test:
     name: Playwright Test Suite
@@ -29,8 +32,27 @@ jobs:
       - name: Install Playwright and Browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Ensure Linux visual baselines exist
+        id: baselines
+        run: |
+          SNAPSHOT="tests/visual/inventory.visual.spec.ts-snapshots/inventory-grid-baseline-chromium-linux.png"
+          if [ ! -f "$SNAPSHOT" ]; then
+            echo "Linux visual baselines missing — generating on CI runner..."
+            npx playwright test tests/visual --project=chromium --update-snapshots
+            echo "created=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run Playwright Tests
         run: npm run test:ci
+
+      - name: Commit Linux visual baselines (first run only)
+        if: steps.baselines.outputs.created == 'true' && github.event_name != 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "tests/visual/**/*.png"
+          git commit -m "chore(ci): add Linux visual regression baselines"
+          git push
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v6

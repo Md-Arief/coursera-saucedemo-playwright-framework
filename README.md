@@ -137,19 +137,28 @@ npm run report
 
 Baseline screenshots are stored in `tests/visual/*-snapshots/`.
 
-```bash
-# First run or after intentional UI changes — generate baselines
-npx playwright test tests/visual --project=chromium --update-snapshots
+Playwright names snapshots by **platform** (e.g. `chromium-win32` on Windows, `chromium-linux` on GitHub Actions). Both can live in the repo — each OS uses its own file.
 
-# Normal run — compare against baselines
-npx playwright test tests/visual --project=chromium
+### Local (Windows)
+
+```bash
+npx playwright test tests/visual --project=chromium --update-snapshots
 ```
+
+### CI (Linux)
+
+The main workflow **auto-generates Linux baselines on first run** if they are missing, then commits them to `main`.
+
+To manually refresh baselines after an intentional UI change:
+
+1. GitHub → **Actions** → **Update Visual Baselines** → **Run workflow**
+2. Or push to `main` and let the bootstrap step run once
 
 Visual checks cover:
 - **Inventory grid** — layout, spacing, product cards
 - **Checkout success panel** — confirmation message and container
 
-> **Note:** Snapshots are platform-specific (e.g. `chromium-win32` vs `chromium-linux`). Generate baselines on the same OS as CI, or use Docker for consistency.
+> **Important:** Commit snapshot PNG files to git. If only Windows baselines exist, CI will fail until Linux baselines are generated (handled automatically on the next `main` push after this fix).
 
 ---
 
