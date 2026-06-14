@@ -161,7 +161,7 @@ Pipeline: `.github/workflows/playwright.yml`
 
 **Steps:**
 1. Checkout code
-2. Node.js 18 + `npm ci`
+2. Node.js 20 + `npm ci`
 3. Install Playwright + Chromium (`--with-deps`)
 4. Run `npm run test:ci`
 5. Upload `playwright-report/` (always)
