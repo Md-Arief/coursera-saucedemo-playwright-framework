@@ -1,0 +1,14 @@
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/.auth/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

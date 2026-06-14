@@ -1,0 +1,24 @@
+{
+  "name": "saucedemo-playwright-framework",
+  "version": "1.0.0",
+  "description": "Production-grade Playwright test automation framework for Sauce Demo e-commerce flows",
+  "scripts": {
+    "test": "playwright test",
+    "test:ci": "playwright test --project=chromium-guest --project=chromium --reporter=html",
+    "test:login": "playwright test tests/login",
+    "test:cart": "playwright test tests/cart",
+    "test:checkout": "playwright test tests/checkout",
+    "test:visual": "playwright test tests/visual",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report",
+    "codegen": "playwright codegen https://www.saucedemo.com"
+  },
+  "keywords": ["playwright", "e2e", "automation", "e-commerce"],
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.3",
+    "typescript": "^5.8.3"
+  }
+}
